@@ -4,7 +4,7 @@ import math
 from ultralytics import YOLO
 
 cam=cv2.VideoCapture('media.mp4')
-model = YOLO("yolo-Weights/yolov8n.pt")
+model = YOLO("yolov8n.pt")
 
 count=0
 tracking_obj={}
