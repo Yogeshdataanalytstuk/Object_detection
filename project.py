@@ -26,6 +26,8 @@ def calculate_iou(box1, box2):
 pt_previous=[]
 while True:
     ret,frame=cam.read()
+    fps = cam.get(cv2.CAP_PROP_FPS)
+    print(int(fps))
     count+=1
     if not ret:
         break
@@ -69,26 +71,36 @@ while True:
 
     print(pt_previous )
     print(pt_current)
+    pt_current1=pt_current.copy()
+    #for initial id initialisation
     if count<=1:
+        print('YES')
 
         for pt1 in pt_current:
-            for pt2 in pt_previous:
-                print(pt1)
-                print(pt2)
-                distance=math.hypot(pt2[0]-pt1[0],pt2[1]-pt1[1])
-                print(math.hypot(pt2[0]-pt1[0],pt2[1]-pt1[1]))
-                if distance <= 20:
-                    print(distance)
-                    tracking_obj[track_id]=pt1
-                    track_id+=1
+            tracking_obj[track_id] = pt1
+            track_id += 1
+
+    #for the rest frames
     else:
+        print("NO")
         for pt1 in pt_current:
             for ob_id,pt2 in tracking_obj.items():
                 distance = math.hypot(pt2[0] - pt1[0], pt2[1] - pt1[1])
-                if distance <= 20:
-    for ob_id,pt1 in tracking_obj.items():
-        cv2.putText(frame,str(ob_id),(pt1[0],pt1[1]-7),0,1,(0,0,255))
-    pt_previous = pt_current
+                if distance <= 30:
+                    print(ob_id)
+
+                    tracking_obj[ob_id] = pt1
+
+
+
+
+                    #track_id+=1
+    print(tracking_obj)
+
+    for ob_id, pt1 in tracking_obj.items():
+        print('OK')
+        cv2.putText(frame, str(ob_id), (pt1[0], pt1[1] - 7), 0, 1, (0, 0, 255))
+    pt_previous = pt_current1
 
 
 
